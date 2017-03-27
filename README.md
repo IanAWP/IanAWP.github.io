@@ -22,7 +22,7 @@ Click here for the source code or Skip to the post about:
 
 [Using the block reader](/BlockIterator)
 
-[Using overviews and underviews](/OverUnderView)
+[Using overviews and underviews](/OverUnderview)
 
 [Parallel Processing](/ParallelProcessing)
 
