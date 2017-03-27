@@ -8,16 +8,18 @@ The tile decomposition is done according to the TMS standard. Two root nodes, br
 
 At least, that is how cesium’s tile generator works, and how I’m going to do it.  Remember the layers.json file?  The line:
 
+```JSON
 "tiles": ["{z}/{x}/{y}.terrain"]
+```
 
 encodes this zoom+cartesian position format into a file system structure. If you change the tile setting, you can encode whatever regular identification pattern you want.
 
-## Tiles and tile boundaries
+### Tiles and tile boundaries
 
 Some of you might be a little surprised at the specification asking for tiles with dimensions of 65x65 samples. 64x64 would be a more obvious choice.  The 65x65 requirement is because each tile overlaps with another tile on two sides. I think about this as "64 novel samples + 1 overlap sample from the next tile". Realising that the first sample is also an overlap sample (for another tile) will help us now that we come to the tile decomposition phase.
 
 First I’ve created two functions.  One for converting a given lat/long coordinate into tile units.  Another for checking the lat/long bounds of a given tile.  Both are pretty simple, the main points to note are the x zoom is always zoom + 1 because nX = 2 when zoom = 0.
-
+```C#
       public static TileCoordinate LatLonToTile(int zoom, double lat, double lon)
 
     	{
@@ -44,10 +46,11 @@ First I’ve created two functions.  One for converting a given lat/long coordin
 
     	}
 
- 
+ ```
 
 The second method produces a bounds structure with a south-west and a north-east component. Technically we need only the south-west coordinate and the zoom level to determine the bounding box but in practice it’s useful to calculate the whole thing now.
 
+```C#
     	public static LatLonBounds TileBounds(int zoom, int xtile, int ytile) {
 
         	double nY = Math.Pow(2.0, zoom);
@@ -77,21 +80,22 @@ The second method produces a bounds structure with a south-west and a north-east
         	return llb;
 
     	}
-
-In order to make our samples overlap we need to find a measurement delta that is 1/64th of the tile size, and take *65 such measurements.*
+```
+In order to make our samples overlap we need to find a measurement delta that is 1/64th of the tile size, and take **65 such measurements.**
 
 Here is a quick example of how it would be done with a smaller tile:
 
-![image alt text](images\image_4.png)
+![Sample checkerboard](images\image_4.png)
 
 By doing this we ensure that two adjacent tiles will share samples without both tiles actually having to be created first*.
 
-## Child Tiles and Watermask
+### Child Tiles and Watermask
 
-The final thing we need to add to our tiles are a child bit mask and a water mask.  I didn’t get around to doing the watermask here - in later code I’ll default empty samples to the sea level measurement (5000), but if cesium is not willing to interpret that as water then neither am I. To do the watermask properly I suspect you’d need water body data to hit test on, lacking that I’m going to set this byte to 0 (land).
+The final thing we need to add to our tiles are a child bit mask and a water mask.  I didn’t get around to doing the watermask here - in later code I’ll default empty samples to the sea level measurement (5000), but if cesium is not willing to interpret that as water then neither am I. To do the watermask properly I suspect you’d need water body data to hit test on, lacking that I’m going to set this byte to 0 (land). Remember that this is a terrain heightmap only, when you overlay imagery from, eg, bing maps, you will still see water wherever it appears in the satellite photography.
 
-The child tile byte is a bitmask that tells cesium which child quads can be retrieved from the server. For on demand tile generation there is no way of knowing which high zoom tiles are present without reading the data.  All we can do is clip to the data bounds, and prune the quadtree whenever we encounter empty tiles at a particular zoom. Aside from managing our tile list, we also need something to produce child ids when given a parent:
+The child tile byte is a bitmask that tells cesium which child quads can be retrieved from the server. For our tile generation there is no way of knowing which high zoom tiles are present without reading the data.  All we can do is clip to the data bounds, and take note whether there is anything to read in a given tile using the valid flag in the iterator API ([See the Next Post](RandomIteratorCode.md)). Aside from managing our tile list, we also need something to produce child ids when given a parent:
 
+```C#
 public List<string> GetChildTiles(int tx, int ty, int zoom)
 
     	{
@@ -117,9 +121,10 @@ public List<string> GetChildTiles(int tx, int ty, int zoom)
         	return s;
 
     	}
-
+```
  and some code to create the mask.
 
+```C#
 private byte GetChildQuads(int zoom, int tX, int tY, Dictionary<string, string> existingTiles)
 
     	{
@@ -143,5 +148,8 @@ private byte GetChildQuads(int zoom, int tX, int tY, Dictionary<string, string> 
         	return childQuadSwitch;
 
     	}
+```
 
-**N**ote*, *It isn’t clear from the doco whether Cesium actually wants a measurement from the center of one of these sample boxes rather than corner measurements as I’m providing.  The documentation states "**the first 2 bytes are the height in the northwest corner" which I take to support my interpretation.*
+[In the next post](RandomIteratorCode.md) we will use the RandomIterator to produce our first pass at full tile generator.
+
+***Note**, It isn’t clear from the doco whether Cesium actually wants a measurement from the center of one of these sample boxes rather than corner measurements as I’m providing.  The documentation states "**the first 2 bytes are the height in the northwest corner"** which I take to support my interpretation.
