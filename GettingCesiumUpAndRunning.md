@@ -9,7 +9,7 @@ I followed the [clever but torturous workaround described here](http://blog.mast
 For the Seattle elevation dataset the tile generator produced 11 zoom levels, and at level 11 there were 28 ‘X’ segments and 20 ‘Y’ segments. The 1.4:1 ratio we see in the output dataset gels nicely with what we know about our input file which has a raster size of 2048/1536 or about 1.3:1
 
 Like pretty much everyone who’s tried this I eventually found that you needed a layer.json file that exposed the tileset – the thing you might have to change here is the {z}/{x}/{y}.terrain path template – the one below matches the output from the docker image.
-
+```JSON
 {
 
   "tilejson": "2.1.0",
@@ -23,16 +23,16 @@ Like pretty much everyone who’s tried this I eventually found that you needed 
   "tiles": ["{z}/{x}/{y}.terrain"]
 
 }
-
+```
 And because my data doesn’t cross the prime meridian I also had to put a blank tile in position 0,1,0.  The reason for that may not be immediately obvious, so it’s a good time for a quick digression into the tile format.
 
 From the [documentation](https://cesiumjs.org/data-and-assets/terrain/formats/heightmap-1.0.html):
 
-![image alt text](images\image_1.png)
+![Root Tiles](images\image_1.png)
 
 And
 
-![image alt text](images\image_2.png)
+![Bitmasks](images\image_2.png)
 
 So there are two top level tiles, and cesium determines which tiles are present using a bitmask at the end of the heightmap. Given that there is no mechanism for telling cesium which root tile holds the data it follows that:
 
@@ -42,6 +42,6 @@ So there are two top level tiles, and cesium determines which tiles are present 
 
 Now that we have everything we need we can run cesium with our exported tileset:
 
-![image alt text](images\image_3.png)
+![Borked initial terrain](images\image_3.png)
 
-The resulting image clearly has some bad artifacting at the data boundary, but that is OK because we don’t need it to work perfectly. So now we have some example tiles to look at and we now know the structure of our test dataset.  In the next post I’m going to go into some more detail about the terrain tile format, and how we will be attempting to align our MRR dataset with the tile boundaries required by cesium.
+The resulting image clearly has some bad artifacting at the data boundary, but that is OK because we are only using it for comparison.   [In the next post](TerrainTileFormat.md) I’m going to go into some more detail about the terrain tile format, and how we will be attempting to align our MRR dataset with the tile boundaries required by cesium.
