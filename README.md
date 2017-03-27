@@ -12,18 +12,18 @@ There are still a couple of reasons why I wanted to look at creating my own terr
 
 In the following series of posts I’ll go through the process of getting set up in cesium and creating a nice little tile generator app in C#.
 
-Click here for the source code or Skip to the post about:
+[Click here to go straight to the source code](https://github.com/IanAWP/MRRCesiumTiler) or Skip to the post about:
 
-[Getting set up with cesium and producing a comparison dataset](/GettingCesiumUpAndRunning)
+[Getting set up with cesium and producing a comparison dataset](/GettingCesiumUpAndRunning.md)
 
-[The cesium terrain tile format. Converting between tile and world coordinates.](/TerrainTileFormat)
+[The cesium terrain tile format. Converting between tile and world coordinates.](/TerrainTileFormat.md)
 
-[Creating the initial tile generation code](/RandomIteratorCode)
+[Creating the initial tile generation code](/RandomIteratorCode.md)
 
-[Using the block reader](/BlockIterator)
+[Using the block reader](/BlockIterator.md)
 
-[Using overviews and underviews](/OverUnderview)
+[Using overviews and underviews](/OverUnderview.md)
 
-[Parallel Processing](/ParallelProcessing)
+[Parallel Processing](/ParallelProcessing.md)
 
-[Summary and final comments](/SummaryAndFinalComments)
+[Summary and final comments](/SummaryAndFinalComments.md)
