@@ -19,7 +19,7 @@ encodes this zoom+cartesian position format into a file system structure. If you
 Some of you might be a little surprised at the specification asking for tiles with dimensions of 65x65 samples. 64x64 would be a more obvious choice.  The 65x65 requirement is because each tile overlaps with another tile on two sides. I think about this as "64 novel samples + 1 overlap sample from the next tile". Realising that the first sample is also an overlap sample (for another tile) will help us now that we come to the tile decomposition phase.
 
 First I’ve created two functions.  One for converting a given lat/long coordinate into tile units.  Another for checking the lat/long bounds of a given tile.  Both are pretty simple, the main points to note are the x zoom is always zoom + 1 because nX = 2 when zoom = 0.
-```C#
+```c#
       public static TileCoordinate LatLonToTile(int zoom, double lat, double lon)
 
     	{
@@ -50,7 +50,7 @@ First I’ve created two functions.  One for converting a given lat/long coordin
 
 The second method produces a bounds structure with a south-west and a north-east component. Technically we need only the south-west coordinate and the zoom level to determine the bounding box but in practice it’s useful to calculate the whole thing now.
 
-```C#
+```c#
     	public static LatLonBounds TileBounds(int zoom, int xtile, int ytile) {
 
         	double nY = Math.Pow(2.0, zoom);
@@ -95,7 +95,7 @@ The final thing we need to add to our tiles are a child bit mask and a water mas
 
 The child tile byte is a bitmask that tells cesium which child quads can be retrieved from the server. For our tile generation there is no way of knowing which high zoom tiles are present without reading the data.  All we can do is clip to the data bounds, and take note whether there is anything to read in a given tile using the valid flag in the iterator API ([See the Next Post](RandomIteratorCode.md)). Aside from managing our tile list, we also need something to produce child ids when given a parent:
 
-```C#
+```c#
 public List<string> GetChildTiles(int tx, int ty, int zoom)
 
     	{
@@ -124,7 +124,7 @@ public List<string> GetChildTiles(int tx, int ty, int zoom)
 ```
  and some code to create the mask.
 
-```C#
+```c#
 private byte GetChildQuads(int zoom, int tX, int tY, Dictionary<string, string> existingTiles)
 
     	{
