@@ -1,4 +1,4 @@
-# ![image alt text](images\image_0.png)
+# ![main banner](images/image_0.png)
 
 # Creating Cesium Terrain Tiles using the MapInfo Raster API
 
