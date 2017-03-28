@@ -83,7 +83,7 @@ if (useBlock)
  }
 ```
 The main difference from the random iterator version is that we have to convert our lat/lon offsets into block coordinates, and make sure to check the valid array:
-```
+```c#
 //64 samples with one row of overlap with the next tile.
 //Hence desired width is 65 tile samples, converted into cell units
 var width = (int)Math.Ceiling((dx * 65) / cellSize);
