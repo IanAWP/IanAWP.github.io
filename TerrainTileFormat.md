@@ -21,64 +21,36 @@ Some of you might be a little surprised at the specification asking for tiles wi
 First I’ve created two functions.  One for converting a given lat/long coordinate into tile units.  Another for checking the lat/long bounds of a given tile.  Both are pretty simple, the main points to note are the x zoom is always zoom + 1 because nX = 2 when zoom = 0.
 ```c#
       public static TileCoordinate LatLonToTile(int zoom, double lat, double lon)
-
     	{
-
- 
-
         	// Calculate the number of tiles across the map, n, using 2^zoom
-
         	double ny = Math.Pow(2.0, zoom);
-
         	double nX = Math.Pow(2.0, zoom + 1);
 
- 
-
         	// Multiply x and y by n. Round results down to give tilex and tiley.
-
         	TileCoordinate coord = new TileCoordinate();
-
         	coord.X = (int)(nX * ((lon + 180) / 360));
-
         	coord.Y = (int)(ny * ((lat + 90)/180));
-
       	  return coord;
-
     	}
-
  ```
 
 The second method produces a bounds structure with a south-west and a north-east component. Technically we need only the south-west coordinate and the zoom level to determine the bounding box but in practice it’s useful to calculate the whole thing now.
 
 ```c#
     	public static LatLonBounds TileBounds(int zoom, int xtile, int ytile) {
-
         	double nY = Math.Pow(2.0, zoom);
-
         	double nX = Math.Pow(2.0, zoom + 1);
-
  
-
         	LatLonCoordinate coordMin = new LatLonCoordinate();
-
         	coordMin.Lon = ((xtile / nX) * 360) - 180;
-
         	coordMin.Lat = ((ytile / nY) * 180) - 90;
-
         	LatLonCoordinate coordMax = new LatLonCoordinate();
-
         	coordMax.Lon = coordMin.Lon+((1 / nX) * 360) ;
-
         	coordMax.Lat = coordMin.Lat + ((1 / nY) * 180);
-
         	var llb = new LatLonBounds();
-
         	llb.Min = coordMin;
-
         	llb.Max = coordMax;
-
         	return llb;
-
     	}
 ```
 In order to make our samples overlap we need to find a measurement delta that is 1/64th of the tile size, and take **65 such measurements.**
@@ -97,56 +69,33 @@ The child tile byte is a bitmask that tells cesium which child quads can be retr
 
 ```c#
 public List<string> GetChildTiles(int tx, int ty, int zoom)
-
     	{
-
         	var bb = PointToTile.TileBounds(zoom, tx, ty);
-
         	var s = new List<string>();
-
         	var v = PointToTile.LatLonToTile(zoom + 1, bb.Min.Lat, bb.Min.Lon);
-
         	var x = PointToTile.LatLonToTile(zoom + 1, bb.Max.Lat, bb.Max.Lon);
-
         	s.Add($"{zoom + 1}/{v.X + 0}/{v.Y + 0}");
-
         	s.Add($"{zoom + 1}/{v.X + 1}/{v.Y + 0}");
-
         	s.Add($"{zoom + 1}/{v.X + 0}/{v.Y + 1}");
-
         	s.Add($"{zoom + 1}/{v.X + 1}/{v.Y + 1}");
-
  
-
         	return s;
-
     	}
 ```
  and some code to create the mask.
 
 ```c#
 private byte GetChildQuads(int zoom, int tX, int tY, Dictionary<string, string> existingTiles)
-
     	{
-
         	byte childQuadSwitch = 0;
-
         	var ct = GetChildTiles(tX, tY, zoom);
-
         	if (existingTiles.ContainsKey(ct[0])) childQuadSwitch += 1;
-
         	if (existingTiles.ContainsKey(ct[1])) childQuadSwitch += 2;
-
         	if (existingTiles.ContainsKey(ct[2])) childQuadSwitch += 4;
-
         	if (existingTiles.ContainsKey(ct[3])) childQuadSwitch += 8;
-
         	// b = 15;
-
  
-
         	return childQuadSwitch;
-
     	}
 ```
 
