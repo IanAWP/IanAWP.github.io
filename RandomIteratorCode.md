@@ -1,7 +1,7 @@
 # Creating the tile generation code
 
 ![New Zealand SRTM heighmap](images/NZSRTM.png)
-Screenshot generated from SRTM data found [Here](http://srtm.csi.cgiar.org/SELECTION/inputCoord.asp)
+*Screenshot generated using the Random Iterator from SRTM data found [Here](http://srtm.csi.cgiar.org/SELECTION/inputCoord.asp)*
 
 Now that we have an understanding of the terrain tile format, and have built some helper methods to navigate around the quadtree and convert between tile, cell and world units, it’s time to read our MRR file and do our first set of optimisations.
 
