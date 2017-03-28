@@ -16,7 +16,7 @@ MRR doesn’t do this conversion for us – if we have a dataset that uses [proj
 
 ### Other Data Formats, Fields and Bands
 
-MRR can be viewed as a container format, it may contain many grids representing different data sources. In a real world file it’s a bit hopeful to assume that there is a single field, with a single band, representing elevation. It wouldn’t be especially hard to add this in but it’s something to keep in mind.  The only gotcha is that you want to filter to continuous, concrete field/band combos as they are the only ones that could plausibly provide elevation data.
+MRR can be viewed as a container format, it may contain many grids representing different data sources. In a real world file it’s a bit hopeful to assume that there is a single field, with a single band, representing elevation. Adding a field/band selector should be fairly trivial as the API allows you to interrogate the MRR heirarchy.  The only gotcha is that you want to filter to continuous, concrete field/band combos as they are the only ones that could plausibly provide elevation data.
 
 In terms of other Formats, MRR natively supports a fair few formats out of the box, but the exact way it supports them will depend on the utilization.  Testing block reader based performance showed that the random iterator was sometimes faster because, for smaller datasets with fewer zoom levels, calling for a block at non-native zoom triggered a full pyramiding process that generated a pyramid file next to the input. Some experimentation would be required if you wanted to optimize performance in these cases.
 
