@@ -152,4 +152,4 @@ This tile saving method shaves off another three seconds on the world dataset.
 </table>
 
 
-Phew! So now we have our first take on the tilegen code, using the simple random access iterator.  It should be obvious that we are not taking advantage of the linear colocation of our datapoints, so [next we will be using the a block based iterator to try and improve our processing speed.](BlockIterator.md)
+Phew! So now we have our first take on the tilegen code, using the simple random access iterator.  It should be obvious that we are not taking advantage of the linearity of our datapoints, so [next we will be using the a block based iterator to try and improve our processing speed.](BlockIterator.md)
