@@ -6,6 +6,9 @@ I have some time on my hands at the moment so I felt like it was time to write u
 
 Cesium is a web-based GIS written in javascript and webGL.  It does a lot of what the google earth plugin used to do, but the main difference from my perspective is that it’s plugin free, under active development, and released under the apache 2.0 license.  I’ve been following cesium for a while now and am always impressed by the number of features and improvements that make it into the monthly releases.
 
+MapInfo Raster is a relatively new Raster format and API designed to support large, sparse, multiscale rasters. There is currently no GDAL support for MRR, meaning that the existing cesium tile generator cannot generate terrain tiles from input data in this format.
+
+### Cesium Terrain Tiles
 One of the neat features that cesium has had for a while is support for terrain tilesets. In fact, AGI host their own terrain server that you can [try out inside the cesium sandbox](https://cesiumjs.org/Cesium/Apps/Sandcastle/gallery/Terrain.html).  If you want to create your own tiles and host them then you can, with a little bit of messing around, utilize the [Cesium Terrain Builder](https://github.com/geo-data/cesium-terrain-builder) to generate the tiles, and the [Cesium Terrain Server](https://github.com/geo-data/cesium-terrain-server) to host them. Your data needs to be able to be read by GDAL and depending on your computing environment you may have to get your hands a little dirty.
 
 There are still a couple of reasons why I wanted to look at creating my own terrain generator.  The main one is that I wanted to be able to generate tiles from native MRR, rather than having to export to a GDAL format.  I am also interested in how cesium could be used as part of a desktop GIS. Terrain tiles for such an application would require the ability to generate tiles on demand, and MRR would be a good fit.
