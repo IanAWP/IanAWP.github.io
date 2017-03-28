@@ -98,7 +98,7 @@ One really obvious problem with this naive method is that it spends time writing
 ```c#
  if (valid)
  {
- 	**hasData = ****true****;**
+ 	hasData = true;
  	var sValue = Convert.ToUInt16((value + 1000) * 5);
  	var conv = BitConverter.GetBytes(sValue);
  	tile[accum] = conv[0];
