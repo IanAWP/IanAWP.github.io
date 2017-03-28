@@ -97,19 +97,12 @@ I'll call the basic tilegen method the Naive method.  It was able to process the
 One really obvious problem with this naive method is that it spends time writing empty files to the hard drive.  We really don’t need to do this as the child byte mask at the end of the tile means we are able to skip tiles that don’t have any data, even if they have a parent or sibling tile that does. We can use the ‘valid’ flag returned from the iterator to make sure we only write tiles that have at least one valid data point:
 ```c#
  if (valid)
-
  {
-
  	**hasData = ****true****;**
-
  	var sValue = Convert.ToUInt16((value + 1000) * 5);
-
  	var conv = BitConverter.GetBytes(sValue);
-
  	tile[accum] = conv[0];
-
  	tile[accum + 1] = conv[1];
-
  }
 ```
 If we only write data to file if there is something to write, we save  about 8 seconds:
@@ -134,9 +127,7 @@ Most of those seconds come from the highest zoom level as [we know that as zoom 
 
 ```c#
 if (zoom != maxZoom) { childQuadSwitch = GetChildQuads(zoom, tX, tY, existingTiles); }
-
 //always create tiles with child tiles
-
 bool create = childQuadSwitch > 0 || (zoom == maxZoom);
 ```
 This tile saving method shaves off another three seconds on the world dataset.
