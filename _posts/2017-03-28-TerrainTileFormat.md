@@ -1,4 +1,8 @@
-# The cesium terrain tile format. Converting between tile and world coordinates.
+---
+title: The cesium terrain tile format. 
+date: 2017-03-28 00:08:00
+---
+
 
 Cesium maintains their own documentation for the terrain tile format we will be using.  It’s very well laid out and is available [here](https://cesiumjs.org/data-and-assets/terrain/formats/heightmap-1.0.html). I don’t want to recreate their documentation here so I’ll summarize the salient points.
 
@@ -57,7 +61,7 @@ In order to make our samples overlap we need to find a measurement delta that is
 
 Here is a quick example of how it would be done with a smaller tile:
 
-![Sample checkerboard](images\image_4.png)
+![Sample checkerboard]({{ site.url }}/images/image_4.png)
 
 By doing this we ensure that two adjacent tiles will share samples without both tiles actually having to be created first*.
 
@@ -65,7 +69,7 @@ By doing this we ensure that two adjacent tiles will share samples without both 
 
 The final things we need to add to our tiles are a child bit mask and a water mask.  I didn’t get around to doing the watermask here - in later code I’ll default empty samples to the sea level measurement (5000), but if cesium is not willing to interpret that as water then neither am I. To do the watermask properly I suspect you’d need water body data to hit test on, lacking that I’m going to set this byte to 0 (land). Remember that this is a terrain heightmap only, when you overlay imagery from, eg, bing maps, you will still see water wherever it appears in the satellite photography.
 
-The child tile byte is a bitmask that tells cesium which child quads can be retrieved from the server. For our tile generation there is no way of knowing which high zoom tiles are present without reading the data.  All we can do is clip to the data bounds, and take note whether there is anything to read in a given tile using the valid flag in the iterator API ([See the Next Post](RandomIteratorCode.md)). Aside from managing our tile list, we also need something to produce child ids when given a parent:
+The child tile byte is a bitmask that tells cesium which child quads can be retrieved from the server. For our tile generation there is no way of knowing which high zoom tiles are present without reading the data.  All we can do is clip to the data bounds, and take note whether there is anything to read in a given tile using the valid flag in the iterator API ([See the Next Post]({% post_url 2017-03-28-RandomIteratorCode %})). Aside from managing our tile list, we also need something to produce child ids when given a parent:
 
 ```c#
 public List<string> GetChildTiles(int tx, int ty, int zoom)
@@ -99,6 +103,6 @@ private byte GetChildQuads(int zoom, int tX, int tY, Dictionary<string, string> 
     	}
 ```
 
-[In the next post](RandomIteratorCode.md) we will use the RandomIterator to produce our first pass at full tile generator.
+[In the next post]({% post_url 2017-03-28-RandomIteratorCode %}) we will use the RandomIterator to produce our first pass at full tile generator.
 
 ***Note**, It isn’t clear from the doco whether Cesium actually wants a measurement from the center of one of these sample boxes rather than corner measurements as I’m providing.  The documentation states "**the first 2 bytes are the height in the northwest corner"** which I take to support my interpretation.

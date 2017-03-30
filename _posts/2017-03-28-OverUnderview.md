@@ -1,4 +1,8 @@
-# Using resolution level
+---
+title: Using resolution level
+date: 2017-03-28 00:05:00
+---
+
 
 The MRR format has another trick up its sleeve that ought to make our terrain sampling a little easier.  MRR is pyramided data format, meaning that data is stored at multiple resolutions with progressive zoom levels. It’s also possible to generate underviews of the data by asking for a block at a zoom level higher than the base layer. These are two really useful features for creating cesium tiles because it helps solve two of the problems we’ve had up until now:
 
@@ -8,11 +12,11 @@ The MRR format has another trick up its sleeve that ought to make our terrain sa
 
 Aliasing is always going to be present to some degree when using nearest neighbour.  Cesium tiles have 65x65 samples, and at the base level, over the same area, we may only have 50x50 cells in our source data.  
 
-![Alias](images\image_8.png)
+![Alias]({{ site.url }}/images/image_8.png)
 
 Aliasing occurs when two of our cesium samples resolve to the same grid cell. In practice that means we have to be conservative when picking our max zoom level lest we get a Minecraft like stair-step profile at our closest zoom.  We could solve this by moving to bilinear or bicubic interpolation, but it will be almost as good for our purposes to use the built in interpolation in the MRR API to get an underview with a smaller virtual cell size instead. (Note that this approach only makes sense if the underview is generated with something other than nearest neighbour!)
 
-![Stairstep](images\image_9.png)
+![Stairstep]({{ site.url }}/images/image_9.png)
 
 As for the allocation problems, using overviews instead of the base resolution data will mean we can use the block iterator at all zoom levels without excessive memory overhead.
 
@@ -27,7 +31,7 @@ for (int zoomLevel = -1; zoom < 2; zoom++) {
     GetGridBlock(westmost, southmost, width, width, zoomLevel, dataset, out actualData, out actualValid);
 }
 ```
-![view Levels](images\image_10.png)
+![view Levels]({{ site.url }}/images/image_10.png)
 
 The block iterator returns the same number of values but the extents are different.  Essentially the cell size is now adjusted by a factor of two.
 
@@ -75,6 +79,6 @@ double multiplyer = Math.Pow(2, resolution);
 ```
 The results are now pretty good! No jagged edges, and a much smoother, more realistic looking tile.
 
-![Smoothing comparison](images\image_11.png)
+![Smoothing comparison]({{ site.url }}/images/image_11.png)
 
-Unfortunately we’ve lost a little speed here as a result of utilizing the underview zoom level.  [In the next post we will use the task parallel library to try and get that time back.](ParallelProcessing.md)
+Unfortunately we’ve lost a little speed here as a result of utilizing the underview zoom level.  [In the next post we will use the task parallel library to try and get that time back.]({% post_url 2017-03-28-ParallelProcessing %})

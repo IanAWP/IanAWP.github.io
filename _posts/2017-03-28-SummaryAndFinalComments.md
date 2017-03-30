@@ -1,4 +1,7 @@
-# Summary and Final Comments
+---
+title: Summary and final comments
+date: 2017-03-28 00:03:00
+---
 
 That’s the end of this series of posts. Over the course of this series we’ve set up cesium, looked at the terrain tile format, introduced ourselves to the MRR format and API, and produced a reasonably efficient terrain tile generator in C#.  The source is published to github under the MIT license so if you want to make use of it feel free to do so. 
 

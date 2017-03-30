@@ -1,6 +1,10 @@
-# ![main banner](images/image_0.png)
+---
+title: MRR and cesium terrain
+date: 2017-03-28 00:10:00
+---
 
-# Creating Cesium Terrain Tiles using the MapInfo Raster API
+# ![main banner]({{ site.url }}/images/image_0.png)
+
 
 I have some time on my hands at the moment so I felt like it was time to write up one of my old hacks: Using the MIRaster C# API to generate terrain tiles for cesium.js.
 
@@ -17,16 +21,17 @@ In the following series of posts I’ll go through the process of getting set up
 
 [Click here to go straight to the source code](https://github.com/IanAWP/MRRCesiumTiler) or Skip to the post about:
 
-[Getting set up with cesium and producing a comparison dataset](/GettingCesiumUpAndRunning.md)
+[Getting set up with cesium and producing a comparison dataset]({% post_url 2017-03-28-GettingCesiumUpAndRunning %})
 
-[The cesium terrain tile format. Converting between tile and world coordinates.](/TerrainTileFormat.md)
+[The cesium terrain tile format. Converting between tile and world coordinates.]({% post_url 2017-03-28-TerrainTileFormat %})
 
-[Creating the initial tile generation code](/RandomIteratorCode.md)
+[Creating the initial tile generation code]({% post_url 2017-03-28-RandomIteratorCode %})
 
-[Using the block reader](/BlockIterator.md)
+[Using the block reader]({% post_url 2017-03-28-BlockIterator %})
 
-[Using overviews and underviews](/OverUnderview.md)
+[Using overviews and underviews]({% post_url 2017-03-28-OverUnderview %})
 
-[Parallel Processing](/ParallelProcessing.md)
+[Parallel Processing]({% post_url 2017-03-28-ParallelProcessing %})
 
-[Summary and final comments](/SummaryAndFinalComments.md)
+[Summary and final comments]({% post_url 2017-03-28-SummaryAndFinalComments %})
+

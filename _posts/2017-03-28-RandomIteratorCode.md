@@ -1,6 +1,10 @@
-# Creating the tile generation code
+---
+title: Creating the tile generation code
+date: 2017-03-28 00:07:00
+---
 
-![New Zealand SRTM heighmap](images/NZSRTM.png)
+
+![New Zealand SRTM heighmap]({{ site.url }}/images/NZSRTM.png)
 *Screenshot generated using the Random Iterator from SRTM data found [Here](http://srtm.csi.cgiar.org/SELECTION/inputCoord.asp)*
 
 Now that we have an understanding of the terrain tile format, and have built some helper methods to navigate around the quadtree and convert between tile, cell and world units, it’s time to read our MRR file and do our first set of optimisations.
@@ -152,4 +156,4 @@ This tile saving method shaves off another three seconds on the world dataset.
 </table>
 
 
-Phew! So now we have our first take on the tilegen code, using the simple random access iterator.  It should be obvious that we are not taking advantage of the linearity of our datapoints, so [next we will be using the a block based iterator to try and improve our processing speed.](BlockIterator.md)
+Phew! So now we have our first take on the tilegen code, using the simple random access iterator.  It should be obvious that we are not taking advantage of the linearity of our datapoints, so [next we will be using the a block based iterator to try and improve our processing speed.]({% post_url 2017-03-28-BlockIterator %})

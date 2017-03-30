@@ -1,4 +1,7 @@
-# Using the block reader
+---
+title:  Using the block reader
+date: 2017-03-28 00:06:00
+---
 
 One of the bottlenecks I’m encountering with the raster API is the cost of using a random access iterator for each cell access.  Each time I call the iterator there is a managed to native transition where the c# api calls through to the underlying c++ iterator just to retrieve a single value.  At lower zoom levels where the terrain samples are far apart this is hard to avoid. *Also, see a note about format performance in the final post.
 
@@ -48,15 +51,15 @@ List<string> lines = new List<string>();
 ```
 I’m going to use excel to perform a quick visualisation of the data I output. I’ve used the 3D surface chart type to test my data here.
 
-![surface Plot](images\image_5.png)
+![surface Plot]({{ site.url }}/images/image_5.png)
 
 If you have a sensible labelling scheme excel will be able to infer the orientation of your data, so I was able to get the above output with a minimum of fuss. The key takeaway is that our linear array has an origin in the south west and fills easterly, then northerly.  This is not a big surprise at all but it’s good to get confirmation. Also it is different from the order expected by cesium, which fills southerly, then easterly.
 
-![Tabular](images\image_6.png)
+![Tabular]({{ site.url }}/images/image_6.png)
 
 Lining the surface plot up with the render in MapInfo shows that we’ve got things about right.
 
-![Overlap plot](images\image_7.png)
+![Overlap plot]({{ site.url }}/images/image_7.png)
 
 Now that we have a better idea how block access works we should be able to incorporate it into the terrain tile generator. We have to be mindful of how much data we ask for with the block reader – we won’t always be able to use the tile extents when querying at the base resolution.
 
@@ -117,4 +120,4 @@ Overall this improvement just about halves the time taken to produce our *World_
   </tr>
 </table>
 
-[In the next post we’ll look at using the overview/underview capabilities of the block reader](OverUnderview.md) to improve the quality of the closer zoom levels, and to allow us to use the block iterator at lower zooms.
+[In the next post we’ll look at using the overview/underview capabilities of the block reader]({{ site.baseurl }}{% post_url 2017-03-28-OverUnderview %}) to improve the quality of the closer zoom levels, and to allow us to use the block iterator at lower zooms.

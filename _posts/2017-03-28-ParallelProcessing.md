@@ -1,4 +1,8 @@
-# Parallel Processing
+---
+title: Parallel processing
+date: 2017-03-28 00:04:00
+---
+
 
 In the last post we started using data underviews on demand to make the best use of our source material when the input cell size is close to or slightly smaller than the sample interval of our cesium terrain tile. Underviews are pretty fast but they disproportionately effect tiles at the maximum zoom level which, as we have discussed, are about two thirds of our tiles.  In this post we will use the Task parallel Library to bring our performance back up.
 
@@ -54,4 +58,4 @@ internal void AddToProgress(int dy)
   </tr>
 </table>
 
-So that's that for now.  [In the final post in this series](SummaryAndFinalComments.md) I'll give a quick summary of what's left undone in this implementation, and introduce the quantized mesh terrain format, which I'm interested in supporting with this project in future.
+So that's that for now.  [In the final post in this series]({% post_url 2017-03-28-SummaryAndFinalComments %}) I'll give a quick summary of what's left undone in this implementation, and introduce the quantized mesh terrain format, which I'm interested in supporting with this project in future.
